@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Notepad Calculator — 纯文本计算器</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-icon">∑</span>
+        <span class="brand-name">Notepad Calculator</span>
+      </div>
+      <div class="actions">
+        <span id="fallbackStatus" class="status">AI 兜底:检测中…</span>
+        <button id="clearBtn" class="btn" title="清空全部内容">清空</button>
+        <button id="copyBtn" class="btn" title="复制结果">复制结果</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="pane results-pane">
+        <div class="pane-label">结果</div>
+        <div id="results" class="results" aria-live="polite"></div>
+      </section>
+
+      <div class="divider"></div>
+
+      <section class="pane input-pane">
+        <div class="pane-label">输入(支持自然语言表达式)</div>
+        <div class="editor-wrap">
+          <pre id="highlight" class="highlight-layer" aria-hidden="true"></pre>
+          <textarea
+            id="input"
+            class="input-area"
+            spellcheck="false"
+            autocapitalize="off"
+            autocomplete="off"
+            autocorrect="off"
+          ></textarea>
+        </div>
+      </section>
+    </main>
+
+    <footer class="hint">
+      示例:<code>15% of 95</code> · <code>sum of 4, 23.4, 45, 67, 90</code> · <code>daily snack cost = $5</code> · <code>7 * daily snack cost</code> · <code>average of 3, 4, 5</code> · <code>the decimal part of 10.2</code> · <code>square root of 81</code>
+    </footer>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.3/math.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
