@@ -266,7 +266,9 @@ body {
   text-overflow: ellipsis;
 }
 
-.pane-label .label-short {
+/* Shared "long label on desktop, short label on mobile" swap — see the
+   .pane-label and .ai-toggle usages below. */
+.label-short {
   display: none;
 }
 
@@ -561,7 +563,21 @@ body {
     justify-content: flex-end;
   }
 
-  .ai-toggle span,
+  /* Keep a short "AI" label instead of dropping it entirely — a bare
+     switch with no text next to it gives no clue what it toggles. */
+  .ai-toggle {
+    padding: 6px 10px 6px 8px;
+    gap: 5px;
+  }
+
+  .ai-toggle .label-full {
+    display: none;
+  }
+
+  .ai-toggle .label-short {
+    display: inline;
+  }
+
   .status {
     display: none;
   }
