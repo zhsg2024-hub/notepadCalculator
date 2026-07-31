@@ -420,13 +420,11 @@ body {
   font-weight: 600;
 }
 
+/* Collapsed by default (native <details>) so the examples never compete
+   with the input/results panes for space — especially important on small
+   screens, where they used to eat a big chunk of the viewport. */
 .hint {
   flex-shrink: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 7px;
-  padding: 12px 22px;
   font-size: 12px;
   color: var(--text-dim);
   border-top: 1px solid var(--border);
@@ -436,9 +434,39 @@ body {
   z-index: 3;
 }
 
-.hint-label {
-  flex-shrink: 0;
-  margin-right: 1px;
+.hint summary {
+  padding: 10px 22px;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  color: var(--text-mid);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hint summary::-webkit-details-marker {
+  display: none;
+}
+
+.hint summary::before {
+  content: "▸";
+  font-size: 10px;
+  color: var(--text-dim);
+  transition: transform 0.15s ease;
+}
+
+.hint[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.hint-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  padding: 0 22px 12px;
 }
 
 .hint code {
@@ -477,4 +505,96 @@ body {
 .input-area::-webkit-scrollbar-thumb:hover {
   background: #b9beda;
   background-clip: content-box;
+}
+
+/* ---- Mobile ----
+   Notes on what NOT to touch: app.js hardcodes a 28px line height and a 4px
+   top padding for the results/highlight/input panes to position the
+   scroll-sync and row-highlight overlays pixel-for-pixel. Font-size can
+   change (line-height stays a fixed 28px either way), but line-height and
+   top/bottom padding must not, or every row will silently drift out of
+   alignment on phones. Horizontal padding and pane *widths* are safe to
+   shrink freely. */
+@media (max-width: 720px) {
+  body {
+    padding: 0;
+  }
+
+  .app {
+    height: 100vh;
+    max-width: 100%;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
+
+  .topbar {
+    padding: 10px 12px;
+    gap: 8px;
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .brand {
+    font-size: 14px;
+    gap: 8px;
+  }
+
+  .brand-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .actions {
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .ai-toggle span,
+  .status {
+    display: none;
+  }
+
+  .btn {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+
+  /* Results only needs to fit short numbers — give the input the room it
+     was losing to a 220px-minimum column that barely fit on a phone. */
+  .results-pane {
+    width: 30%;
+    min-width: 84px;
+  }
+
+  .pane-label {
+    font-size: 10px;
+    padding: 8px 10px 6px;
+  }
+
+  .results {
+    padding: 4px 8px 16px;
+    font-size: 16px;
+  }
+
+  .highlight-layer,
+  .input-area {
+    padding: 4px 10px 16px;
+    font-size: 16px; /* also avoids iOS Safari auto-zooming in on focus */
+  }
+
+  .row-highlight {
+    left: 3px;
+    right: 3px;
+  }
+
+  .hint summary {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  .hint-list {
+    padding: 0 14px 10px;
+  }
 }
