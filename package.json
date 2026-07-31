@@ -1,0 +1,12 @@
+{
+  "name": "notepad-calculator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Plain-English notepad calculator (frontend). See server/ for the optional AI-fallback backend.",
+  "scripts": {
+    "test": "node --test tests/"
+  },
+  "devDependencies": {
+    "mathjs": "^12.4.3"
+  }
+}

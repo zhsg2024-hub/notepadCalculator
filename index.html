@@ -14,7 +14,11 @@
         <span class="brand-name">Notepad Calculator</span>
       </div>
       <div class="actions">
-        <span id="fallbackStatus" class="status">AI 兜底:检测中…</span>
+        <label class="ai-toggle" title="关闭后,页面不会向任何后端/网络发起请求,100% 离线运行">
+          <input type="checkbox" id="aiToggle" />
+          <span>AI 兜底</span>
+        </label>
+        <span id="fallbackStatus" class="status">AI 兜底:已关闭</span>
         <button id="clearBtn" class="btn" title="清空全部内容">清空</button>
         <button id="copyBtn" class="btn" title="复制结果">复制结果</button>
       </div>
@@ -50,6 +54,7 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.3/math.js"></script>
+  <script src="engine.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

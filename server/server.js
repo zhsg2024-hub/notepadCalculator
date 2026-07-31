@@ -183,7 +183,13 @@ app.post("/api/evaluate", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Notepad Calculator fallback server running on http://localhost:${PORT}`);
-  console.log(`Model: ${QWEN_MODEL} · Key loaded: ${QWEN_API_KEY ? "yes" : "NO (set QWEN_API_KEY in .env)"}`);
-});
+// Only auto-start the server when run directly (`node server.js` / `npm start`),
+// not when required by tests (e.g. tests/server-extract-result.test.js).
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Notepad Calculator fallback server running on http://localhost:${PORT}`);
+    console.log(`Model: ${QWEN_MODEL} · Key loaded: ${QWEN_API_KEY ? "yes" : "NO (set QWEN_API_KEY in .env)"}`);
+  });
+}
+
+module.exports = { extractResult, buildPrompt };
