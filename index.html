@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Notepad Calculator — 纯文本计算器</title>
+<title>Notepad Calculator — Plain Text Calculator</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -14,27 +14,31 @@
         <span class="brand-name">Notepad Calculator</span>
       </div>
       <div class="actions">
-        <label class="ai-toggle" title="关闭后,页面不会向任何后端/网络发起请求,100% 离线运行">
+        <label class="ai-toggle" title="When off, the page never makes any network/backend requests — 100% offline">
           <input type="checkbox" id="aiToggle" />
-          <span>AI 兜底</span>
+          <span>AI fallback</span>
         </label>
-        <span id="fallbackStatus" class="status">AI 兜底:已关闭</span>
-        <button id="clearBtn" class="btn" title="清空全部内容">清空</button>
-        <button id="copyBtn" class="btn" title="复制结果">复制结果</button>
+        <span id="fallbackStatus" class="status">AI fallback: off</span>
+        <button id="clearBtn" class="btn" title="Clear everything">Clear</button>
+        <button id="copyBtn" class="btn" title="Copy results">Copy results</button>
       </div>
     </header>
 
     <main class="workspace">
       <section class="pane results-pane">
-        <div class="pane-label">结果</div>
-        <div id="results" class="results" aria-live="polite"></div>
+        <div class="pane-label">Results</div>
+        <div class="results-wrap">
+          <div id="resultsRowHighlight" class="row-highlight" aria-hidden="true"></div>
+          <div id="results" class="results" aria-live="polite"></div>
+        </div>
       </section>
 
       <div class="divider"></div>
 
       <section class="pane input-pane">
-        <div class="pane-label">输入(支持自然语言表达式)</div>
+        <div class="pane-label">Input (supports natural-language expressions)</div>
         <div class="editor-wrap">
+          <div id="inputRowHighlight" class="row-highlight" aria-hidden="true"></div>
           <pre id="highlight" class="highlight-layer" aria-hidden="true"></pre>
           <textarea
             id="input"
@@ -49,7 +53,15 @@
     </main>
 
     <footer class="hint">
-      示例:<code>15% of 95</code> · <code>sum of 4, 23.4, 45, 67, 90</code> · <code>daily snack cost = $5</code> · <code>7 * daily snack cost</code> · <code>average of 3, 4, 5</code> · <code>the decimal part of 10.2</code> · <code>square root of 81</code>
+      <span class="hint-label">Examples:</span>
+      <code>15% of 95</code>
+      <code>sum of 4, 23.4, 45, 67, 90</code>
+      <code>daily snack cost = $5</code>
+      <code>7 * daily snack cost</code>
+      <code>average of 3, 4, 5</code>
+      <code>the decimal part of 10.2</code>
+      <code>square root of 81</code>
+      <code>100 cm in m</code>
     </footer>
   </div>
 
