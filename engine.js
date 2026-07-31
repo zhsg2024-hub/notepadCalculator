@@ -154,7 +154,7 @@ const ASSIGN_IS_RE = new RegExp(
 // their normal meaning) or a filler word from a question ("what is ...").
 const RESERVED_LEADING_WORDS = new Set([
   "sum", "summary", "total", "add", "average", "avg", "mean", "max", "maximum", "min", "minimum",
-  "the", "square", "cube", "sqrt", "decimal", "fractional", "integer", "whole", "part",
+  "the", "square", "cube", "sqrt", "root", "decimal", "fractional", "integer", "whole", "part",
   "absolute", "abs", "what", "how", "calculate", "compute", "find",
   "is", "equals", "of", "up", "below", "percent", "plus", "minus", "times",
   "multiplied", "divided", "by", "over", "in", "to",
@@ -296,7 +296,9 @@ function replaceWordOperators(expr) {
 const UNARY_PHRASES = [
   { re: /^(?:the\s+)?(?:decimal|fractional)\s+part\s+of\s+(.+)$/i, wrap: (x) => `((${x})-fix(${x}))` },
   { re: /^(?:the\s+)?(?:integer|whole)\s+part\s+of\s+(.+)$/i, wrap: (x) => `fix(${x})` },
-  { re: /^(?:the\s+)?(?:square\s+root|sqrt)\s+of\s+(.+)$/i, wrap: (x) => `sqrt(${x})` },
+  // "square root of", "sqrt of" and the bare "root of" (plus the "of"-less
+  // shorthand, e.g. "root 9") all mean the same thing.
+  { re: /^(?:the\s+)?(?:square\s+root|sqrt|root)\s+(?:of\s+)?(.+)$/i, wrap: (x) => `sqrt(${x})` },
   { re: /^(?:the\s+)?(?:absolute\s+value|abs)\s+of\s+(.+)$/i, wrap: (x) => `abs(${x})` },
   // "of" is optional, so both "square of 3" and the shorter "square 3" work.
   { re: /^(?:the\s+)?square\s+(?:of\s+)?(.+)$/i, wrap: (x) => `(${x})^2` },

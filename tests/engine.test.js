@@ -82,6 +82,12 @@ test("square/cube also work without 'of' (regression: 'square 3' had no answer)"
   assert.equal(evalLine("square root of 81"), "9");
 });
 
+test("bare 'root of'/'root' also mean square root (regression: 'root of 9' had no answer)", () => {
+  assert.equal(evalLine("root of 9"), "3");
+  assert.equal(evalLine("root 9"), "3");
+  assert.equal(evalLine("the root of 16"), "4");
+});
+
 test("filler words / question phrasing are stripped", () => {
   assert.equal(evalLine("what is 5 + 5"), "10");
   assert.equal(evalLine("what's 5 + 5?"), "10");
