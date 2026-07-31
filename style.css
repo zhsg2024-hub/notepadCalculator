@@ -258,6 +258,16 @@ body {
   padding: 14px 18px 10px;
   flex-shrink: 0;
   user-select: none;
+  /* Both panes' content areas sit directly below this label and must start
+     at the exact same pixel row for the results/input lines to line up, so
+     this must always stay a single line no matter how long the text is. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pane-label .label-short {
+  display: none;
 }
 
 .divider {
@@ -571,6 +581,17 @@ body {
   .pane-label {
     font-size: 10px;
     padding: 8px 10px 6px;
+  }
+
+  /* The full "Input (supports natural-language expressions)" label is long
+     enough to visually crowd the narrow phone layout even when clipped, so
+     swap in a short one instead of relying on the ellipsis. */
+  .pane-label .label-full {
+    display: none;
+  }
+
+  .pane-label .label-short {
+    display: inline;
   }
 
   .results {
