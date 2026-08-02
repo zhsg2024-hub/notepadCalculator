@@ -225,7 +225,11 @@ function stripCurrency(expr) {
 }
 
 function applyPercentOf(expr) {
-  const re = new RegExp(`(${OPERAND})\\s*(?:%|percent)\\s*of\\s*(${OPERAND})`, "gi");
+  // "of the price" / "of the tax" — allow a filler "the" in front of the
+  // operand, same as the "the square of"/"the sum of" phrasings elsewhere,
+  // otherwise the greedy OPERAND match on the second group would swallow
+  // "the" itself as if it were the variable name.
+  const re = new RegExp(`(?:the\\s+)?(${OPERAND})\\s*(?:%|percent)\\s*of\\s*(?:the\\s+)?(${OPERAND})`, "gi");
   return expr.replace(re, (_, a, b) => `((${a})/100*(${b}))`);
 }
 
@@ -242,7 +246,7 @@ function applyBarePercent(expr) {
 function resolveAggregateItems(text, scope) {
   const parts = text
     .split(",")
-    .map((s) => s.trim())
+    .map((s) => s.trim().replace(/^the\s+/i, ""))
     .filter(Boolean);
   if (parts.length === 0) return null;
 

@@ -38,6 +38,16 @@ test("percentages", () => {
   assert.equal(evalLine("20%"), "0.2");
 });
 
+test("percent-of a variable with a leading 'the' (regression: '10 percent of the price' had no answer)", () => {
+  const results = evalText("price is 100\n10 percent of the price");
+  assert.deepEqual(results, ["100", "10"]);
+  // Bare "of price" (no "the") must keep working alongside the "the" form.
+  assert.equal(
+    evalText("price is 100\n10 percent of price")[1],
+    "10"
+  );
+});
+
 test("aggregate functions (sum / average / max / min)", () => {
   assert.equal(evalLine("sum of 4, 23.4, 45, 67, 90"), "229.4");
   assert.equal(evalLine("total of 1, 2, 3"), "6");
@@ -53,6 +63,10 @@ test("aggregate functions accept variables, not just literal numbers (regression
 
   const mixed = evalText("a = 10\naverage of a, 20, 30");
   assert.deepEqual(mixed, ["10", "20"]);
+
+  // Same "the <variable>" filler as the percent-of regression above.
+  const withThe = evalText("price is 100\ntax is 9% of price\nsum of the tax, the price");
+  assert.deepEqual(withThe, ["100", "9", "109"]);
 });
 
 test("word operators", () => {
