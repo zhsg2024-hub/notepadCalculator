@@ -153,7 +153,7 @@ const ASSIGN_IS_RE = new RegExp(
 // start of a line (so "square 3", "sum of 1, 2", "average 10" etc. keep
 // their normal meaning) or a filler word from a question ("what is ...").
 const RESERVED_LEADING_WORDS = new Set([
-  "sum", "summary", "total", "add", "average", "avg", "mean", "max", "maximum", "min", "minimum",
+  "sum", "summary", "total", "add", "added", "subtract", "subtracted", "average", "avg", "mean", "max", "maximum", "min", "minimum",
   "the", "square", "cube", "sqrt", "root", "decimal", "fractional", "integer", "whole", "part",
   "absolute", "abs", "what", "how", "calculate", "compute", "find",
   "is", "equals", "of", "up", "below", "percent", "plus", "minus", "times",
@@ -285,8 +285,19 @@ function replaceWordOperators(expr) {
   return expr
     .replace(/\bmultiplied\s+by\b/gi, "*")
     .replace(/\bdivided\s+by\b/gi, "/")
+    // "X subtracted from Y" means Y - X (reversed operand order), unlike
+    // every other word operator here, so it needs its own swap instead of
+    // a straight token substitution.
+    .replace(/(.+?)\s+subtracted\s+from\s+(.+)/gi, (_, a, b) => `(${b})-(${a})`)
+    .replace(/\badded\s+to\b/gi, "+")
     .replace(/\bplus\b/gi, "+")
     .replace(/\bminus\b/gi, "-")
+    // "add"/"subtract" as a binary operator, e.g. "19 add 100". Bare-word
+    // aggregate uses like "add 4, 5, 6" are already intercepted by
+    // tryAggregate() before this runs, so this only ever fires when "add"
+    // sits *between* two operands.
+    .replace(/\badd\b/gi, "+")
+    .replace(/\bsubtract\b/gi, "-")
     .replace(/\btimes\b/gi, "*")
     .replace(/\bover\b/gi, "/");
 }
@@ -344,7 +355,7 @@ function formatNumber(v) {
 /* ---------------- Syntax highlighting ---------------- */
 
 const KEYWORD_RE =
-  "\\b(?:sum|summary|total|add|average|avg|mean|max|maximum|min|minimum|of|up|below|" +
+  "\\b(?:sum|summary|total|add|added|subtract|subtracted|average|avg|mean|max|maximum|min|minimum|of|up|below|" +
   "percent|plus|minus|times|multiplied|divided|by|over|the|square|root|sqrt|decimal|" +
   "fractional|integer|whole|part|absolute|value|abs|cube|what|is|equals|calculate|compute|how|much|find|" +
   "in|to|today|tomorrow|yesterday|after|before|from)\\b";

@@ -64,6 +64,15 @@ test("word operators", () => {
   assert.equal(evalLine("10 over 2"), "5");
 });
 
+test("'add'/'subtract' as binary word operators (regression: '19 add 100' had no answer)", () => {
+  assert.equal(evalLine("19 add 100"), "119");
+  assert.equal(evalLine("50 subtract 8"), "42");
+  assert.equal(evalLine("5 added to 10"), "15");
+  assert.equal(evalLine("20 subtracted from 30"), "10");
+  // The leading-word aggregate form ("add 4, 5, 6" => sum) must still work.
+  assert.equal(evalLine("add 4, 5, 6"), "15");
+});
+
 test("unary phrases: decimal/integer part, sqrt, abs, square, cube", () => {
   assert.equal(evalLine("the decimal part of 10.2"), "0.2");
   assert.equal(evalLine("the integer part of 10.7"), "10");
