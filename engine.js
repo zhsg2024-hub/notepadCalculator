@@ -244,8 +244,13 @@ function applyBarePercent(expr) {
 // the line fail/go to AI fallback) if any item can't be resolved at all,
 // rather than silently ignoring it.
 function resolveAggregateItems(text, scope) {
+  // Items are normally comma-separated ("average of 10, 20, 100"), but
+  // people often just leave the commas out ("average of 10 20 100"). Only
+  // fall back to splitting on whitespace when there's no comma at all, so
+  // an existing comma-separated expression with internal spaces (e.g. a
+  // variable name) isn't broken apart by mistake.
   const parts = text
-    .split(",")
+    .split(text.includes(",") ? "," : /\s+/)
     .map((s) => s.trim().replace(/^the\s+/i, ""))
     .filter(Boolean);
   if (parts.length === 0) return null;

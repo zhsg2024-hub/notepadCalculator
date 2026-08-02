@@ -69,6 +69,15 @@ test("aggregate functions accept variables, not just literal numbers (regression
   assert.deepEqual(withThe, ["100", "9", "109"]);
 });
 
+test("aggregate items can be space-separated, not just comma-separated (regression: 'average of 10 20 100' had no answer)", () => {
+  assert.equal(evalLine("average of 10 20 100"), "43.333333");
+  assert.equal(evalLine("sum of 4 23.4 45 67 90"), "229.4");
+  // Comma-separated form must keep working unchanged.
+  assert.equal(evalLine("average of 10, 20, 100"), "43.333333");
+  const results = evalText("price is 100\ntax is 9\nsum of tax price");
+  assert.deepEqual(results, ["100", "9", "109"]);
+});
+
 test("word operators", () => {
   assert.equal(evalLine("4 plus 5"), "9");
   assert.equal(evalLine("10 minus 3"), "7");
